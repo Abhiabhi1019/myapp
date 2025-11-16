@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  web:
+    build: ./backend
+    container_name: myapp_web
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydatabase
+    volumes:
+      - ./frontend:/app/frontend:ro
+      - ./mongo_seed:/app/mongo_seed
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6.0
+    container_name: myapp_mongo
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mongo_data:
