@@ -21,4 +21,4 @@ jobs:
           aws-region: ap-south-1
 
       - name: Upload to S3
-        run: aws s3 sync . s3://myappdeploybucket --delete
+        run: aws s3 sync . s3://myapp-deploy-bucket1 --delete
