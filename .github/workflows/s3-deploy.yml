@@ -3,7 +3,7 @@ name: Upload to S3
 on:
   push:
     branches:
-      - main   # whenever you push to main
+      - main
 
 jobs:
   deploy:
@@ -16,9 +16,9 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AKIAX7SRDC52AWGWQ5HR }}
-          aws-secret-access-key: ${{ secrets.46DFdq+BLtiH73zZ/3vS+sL8WQFNLKS6bUj6SekB }}
-          aws-region: ${{ secrets.us-east-1}}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Sync files to S3 bucket
         run: |
