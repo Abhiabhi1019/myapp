@@ -1,0 +1,25 @@
+name: Upload to S3
+
+on:
+  push:
+    branches:
+      - main   # whenever you push to main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AKIAX7SRDC52AWGWQ5HR }}
+          aws-secret-access-key: ${{ secrets.46DFdq+BLtiH73zZ/3vS+sL8WQFNLKS6bUj6SekB }}
+          aws-region: ${{ secrets.us-east-1}}
+
+      - name: Sync files to S3 bucket
+        run: |
+          aws s3 sync . s3://myapp-deploy-bucket --delete
