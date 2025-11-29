@@ -1,32 +1,19 @@
-name: Deploy to S3
-
-on:
-  push:
-    branches:
-      - main
-
 permissions:
-  id-token: write   # REQUIRED for OIDC
-  contents: read    # Required to checkout repo
+  id-token: write
+  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Configure AWS credentials through OIDC
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::548852143988:role/GitHubS3DeployRole
           aws-region: us-east-1
-          audience: sts.amazonaws.com
 
       - name: Upload to S3
-        run: |
-          aws s3 sync . s3://myapp-deploy-bucket1 \
-            --exclude ".git/*" \
-            --exclude ".github/*" \
-            --delete
+        run: aws s3 cp ./build s3://abhipowerfullbucket --recursive
