@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write   # REQUIRED for OIDC
+  contents: read    # Required to checkout repo
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -18,11 +22,11 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::548852143988:role/GitHubS3DeployRole
           aws-region: us-east-1
+          audience: sts.amazonaws.com
 
       - name: Upload to S3
         run: |
           aws s3 sync . s3://myapp-deploy-bucket1 \
             --exclude ".git/*" \
             --exclude ".github/*" \
-            --exclude "*.md" \
             --delete
