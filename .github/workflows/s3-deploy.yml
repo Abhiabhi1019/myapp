@@ -13,11 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: Configure AWS credentials through OIDC
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::548852143988:role/aws_access #change to reflect your IAM role’s ARN
-          aws-region: ap-south-1
+          role-to-assume: arn:aws:iam::548852143988:role/GitHubS3DeployRole
+          aws-region: us-east-1
 
       - name: Upload to S3
-        run: aws s3 sync . s3://myapp-deploy-bucket1 --delete
+        run: |
+          aws s3 sync . s3://myapp-deploy-bucket1 \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude "*.md" \
+            --delete
