@@ -21,10 +21,10 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::548852143988:role/aws_access
-          aws-region: us-east-1
+          aws-region: us-east-1  # CHANGE THIS BASED ON YOUR BUCKET REGION
           role-session-name: aws_access
 
-      - name: Verify identity (quick test)
+      - name: Verify identity
         run: aws sts get-caller-identity
 
       - name: Upload to S3
@@ -32,4 +32,5 @@ jobs:
           aws s3 sync . s3://myapp-demobucket123 \
             --exclude ".git/*" \
             --exclude ".github/*" \
-            --delete
+            --delete \
+            --region ap-south-1  # CHANGE THIS TOO
