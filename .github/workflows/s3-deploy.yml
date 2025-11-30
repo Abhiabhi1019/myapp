@@ -22,7 +22,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::548852143988:role/GitHubS3DeployRole
           aws-region: us-east-1
-          role-session-name: GitHubActionsSession
+          role-session-name: aws_access
 
       - name: Verify identity (quick test)
         run: aws sts get-caller-identity
