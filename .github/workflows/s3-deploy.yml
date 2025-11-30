@@ -29,7 +29,7 @@ jobs:
 
       - name: Upload to S3
         run: |
-          aws s3 sync . s3://myapp-deploy-bucket11 \
+          aws s3 sync . s3://myapp-demobucket123 \
             --exclude ".git/*" \
             --exclude ".github/*" \
             --delete
