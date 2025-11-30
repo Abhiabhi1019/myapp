@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 permissions:
   id-token: write
@@ -13,15 +12,24 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
 
-      - name: Configure AWS Credentials
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials through OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::548852143988:role/GitHubS3DeployRole
           aws-region: us-east-1
+          role-session-name: GitHubActionsSession
+
+      - name: Verify identity (quick test)
+        run: aws sts get-caller-identity
 
       - name: Upload to S3
-        run: aws s3 sync ./build s3://abhipowerfullbucket
+        run: |
+          aws s3 sync . s3://myapp-deploy-bucket11 \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --delete
